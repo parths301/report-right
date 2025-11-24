@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReportRight | Expert RBI & FEMA Filing Services</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+
+    <!-- Configuration -->
+    <script>
+        // Default to Light Mode
+        if (localStorage.theme === 'dark') {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        theme: {
+                            50: 'hsl(var(--hue), 80%, 98%)',
+                            100: 'hsl(var(--hue), 80%, 94%)',
+                            200: 'hsl(var(--hue), 80%, 85%)',
+                            400: 'hsl(var(--hue), 80%, 60%)',
+                            500: 'hsl(var(--hue), 70%, 50%)',
+                            600: 'hsl(var(--hue), 80%, 40%)',
+                            900: 'hsl(var(--hue), 60%, 15%)',
+                            950: 'hsl(var(--hue), 60%, 8%)',
+                        }
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #64748b 1px, transparent 1px), linear-gradient(to bottom, #64748b 1px, transparent 1px)",
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'cursor': 'cursor .75s step-end infinite',
+                        'tilt': 'tilt 10s infinite linear',
+                    },
+                    keyframes: {
+                        cursor: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0' },
+                        },
+                        tilt: {
+                            '0%, 50%, 100%': { transform: 'rotate(0deg)' },
+                            '25%': { transform: 'rotate(0.5deg)' },
+                            '75%': { transform: 'rotate(-0.5deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --hue: 265;
+        }
+
+        /* Light Mode Base */
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        /* Dark Mode Base */
+        html.dark body {
+            background-color: #020617;
+            color: #f8fafc;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 40;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        html.dark .noise-overlay {
+            opacity: 0.04;
+            filter: invert(1);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        html.dark .glass {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass:hover {
+            transform: translateY(-2px);
+            transition: transform 0.3s ease, background 0.3s;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: hsl(var(--hue), 80%, 50%);
+            z-index: 100;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .type-cursor::after {
+            content: '|';
+            animation: cursor 1s infinite step-start;
+            margin-left: 2px;
+            color: hsl(var(--hue), 80%, 50%);
+        }
+    </style>
+</head>
+
+<body class="antialiased relative transition-colors duration-500">
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="noise-overlay"></div>
+
+    <!-- Background Orbs -->
+    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+        <div class="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full filter blur-[100px] transition-colors duration-1000 ease-linear opacity-20 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen"
+            style="background-color: hsl(var(--hue), 80%, 50%)"></div>
+        <div
+            class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full filter blur-[80px] animate-pulse-slow transition-all duration-500 opacity-20 dark:opacity-10 bg-slate-300 dark:bg-theme-900 mix-blend-multiply dark:mix-blend-screen">
+        </div>
+        <div
+            class="absolute inset-0 bg-grid-pattern [background-size:40px_40px] opacity-[0.03] dark:opacity-[0.05] [mask-image:linear-gradient(to_bottom,black,transparent)]">
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-0 w-full z-50 glass border-b dark:border-white/5 border-slate-200/50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <i class="fas fa-file-contract text-3xl text-theme-600 dark:text-theme-500 transition-colors duration-300"
+                    style="color: hsl(var(--hue), 80%, 60%)"></i>
+                <span
+                    class="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-sans transition-colors">ReportRight</span>
+            </a>
+
+            <div class="flex items-center gap-6">
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#services"
+                        class="text-sm font-medium text-slate-600 dark:text-gray-300 hover:text-theme-600 dark:hover:text-white transition-colors">Services</a>
+                    <a href="#about"
+                        class="text-sm font-medium text-slate-600 dark:text-gray-300 hover:text-theme-600 dark:hover:text-white transition-colors">Why
+                        Us</a>
+                    <a href="#pricing"
+                        class="text-sm font-medium text-slate-600 dark:text-gray-300 hover:text-theme-600 dark:hover:text-white transition-colors">Pricing</a>
+                </div>
+
+                <button id="themeToggle"
+                    class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-colors text-slate-600 dark:text-gray-300 focus:outline-none">
+                    <i class="fas fa-sun hidden dark:inline-block text-yellow-300 text-lg"></i>
+                    <i class="fas fa-moon inline-block dark:hidden text-slate-600 text-lg"></i>
+                </button>
+
+                <a href="#contact"
+                    class="hidden md:block px-5 py-2.5 rounded-full text-white dark:text-black text-sm font-bold transition-transform hover:scale-105"
+                    style="background-color: hsl(var(--hue), 85%, 60%)">
+                    Contact
+                </a>
+
+                <button onclick="toggleMenu()" class="md:hidden text-slate-900 dark:text-white p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu"
+            class="hidden md:hidden absolute w-full glass border-b dark:border-white/10 border-slate-200 p-4 flex flex-col gap-4 text-center">
+            <a href="#services" class="text-slate-800 dark:text-gray-300 py-2 font-medium">Services</a>
+            <a href="#about" class="text-slate-800 dark:text-gray-300 py-2 font-medium">Why Us</a>
+            <a href="#pricing" class="text-slate-800 dark:text-gray-300 py-2 font-medium">Pricing</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-20 px-4 relative">
+        <div class="max-w-4xl mx-auto text-center space-y-8 reveal active">
+
+            <!-- Updated Badge -->
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-theme-100 dark:bg-white/5 border border-theme-200 dark:border-white/10 text-sm font-bold tracking-wide text-theme-950 dark:text-gray-200">
+                <!-- Icon: Black in Light, White in Dark -->
+                <i class="fas fa-check text-black dark:text-white"></i>
+                <span>Reporting, Done Right</span>
+            </div>
+
+            <!-- Dynamic Heading -->
+            <div class="min-h-[12rem] lg:min-h-[8rem] flex flex-col justify-center items-center">
+                <h1
+                    class="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.1] transition-colors duration-500">
+                    Simplify your <br class="md:hidden" />
+                    <!-- Typewriter Span - Sentance Cap -->
+                    <span
+                        class="type-cursor font-serif italic text-transparent bg-clip-text bg-gradient-to-r from-theme-600 to-theme-800 dark:from-theme-500 dark:to-white"
+                        style="background-image: linear-gradient(to right, hsl(var(--hue), 80%, 40%), hsl(var(--hue), 60%, 20%))"
+                        id="typewriter-text"></span>
+                </h1>
+            </div>
+
+            <p
+                class="text-lg text-slate-600 dark:text-gray-400 leading-relaxed max-w-2xl mx-auto font-medium dark:font-normal">
+                We simplify the complex landscape of FEMA regulations. From filing <strong>Form FC-GPR</strong> to
+                managing <strong>LLP compliance</strong>, our consultants ensure your submissions are accurate and
+                timely.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center gap-4 justify-center">
+                <a href="#contact"
+                    class="w-full sm:w-auto px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-black rounded-lg font-bold hover:bg-slate-700 dark:hover:bg-gray-200 transition-colors shadow-xl shadow-theme-200 dark:shadow-none">
+                    Start a Filing
+                </a>
+                <a href="#services"
+                    class="w-full sm:w-auto px-8 py-4 rounded-lg border border-slate-300 dark:border-white/20 text-slate-700 dark:text-white font-semibold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
+                    View Forms
+                </a>
+            </div>
+
+            <div
+                class="pt-8 flex flex-wrap gap-8 justify-center opacity-75 dark:opacity-60 text-xs font-bold tracking-widest text-slate-500 dark:text-gray-400 uppercase">
+                <div class="flex items-center gap-2"><i class="fa-solid fa-clock"></i> Timely Filings</div>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-magnifying-glass"></i> Meticulous Review
+                </div>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-lock"></i> Confidentiality Assured</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="about" class="py-24 px-4 bg-slate-100/[0.5] dark:bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Cards -->
+                <div class="glass p-6 rounded-2xl reveal hover:-translate-y-1 transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-theme-100 dark:bg-theme-950 flex items-center justify-center mb-4 text-theme-700 dark:text-theme-500"
+                        style="color: hsl(var(--hue), 80%, 50%)">
+                        <i class="fas fa-user-tie text-lg"></i>
+                    </div>
+                    <h3 class="text-slate-900 dark:text-white font-bold mb-2">Expert Guidance</h3>
+                    <p class="text-sm text-slate-600 dark:text-gray-400">Our team possesses specialized knowledge of RBI
+                        regulations with extensive experience in FIRMS portal filings.</p>
+                </div>
+
+                <div class="glass p-6 rounded-2xl reveal delay-100 hover:-translate-y-1 transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-theme-100 dark:bg-theme-950 flex items-center justify-center mb-4 text-theme-700 dark:text-theme-500"
+                        style="color: hsl(var(--hue), 80%, 50%)">
+                        <i class="fas fa-hourglass-half text-lg"></i>
+                    </div>
+                    <h3 class="text-slate-900 dark:text-white font-bold mb-2">Time-Saving</h3>
+                    <p class="text-sm text-slate-600 dark:text-gray-400">We handle the entire document preparation and
+                        submission workflow, allowing you to focus on your business.</p>
+                </div>
+
+                <div class="glass p-6 rounded-2xl reveal delay-200 hover:-translate-y-1 transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-theme-100 dark:bg-theme-950 flex items-center justify-center mb-4 text-theme-700 dark:text-theme-500"
+                        style="color: hsl(var(--hue), 80%, 50%)">
+                        <i class="fas fa-people-arrows text-lg"></i>
+                    </div>
+                    <h3 class="text-slate-900 dark:text-white font-bold mb-2">Stakeholder Liaison</h3>
+                    <p class="text-sm text-slate-600 dark:text-gray-400">We coordinate with your bankers (AD Banks) and
+                        consultants to ensure alignment on reporting data.</p>
+                </div>
+
+                <div class="glass p-6 rounded-2xl reveal delay-300 hover:-translate-y-1 transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-theme-100 dark:bg-theme-950 flex items-center justify-center mb-4 text-theme-700 dark:text-theme-500"
+                        style="color: hsl(var(--hue), 80%, 50%)">
+                        <i class="fas fa-check-double text-lg"></i>
+                    </div>
+                    <h3 class="text-slate-900 dark:text-white font-bold mb-2">Pre-Check Process</h3>
+                    <p class="text-sm text-slate-600 dark:text-gray-400">Our meticulous review process mitigates the
+                        risk of rejection and resubmission, aiming for accuracy on the first go.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services / Forms -->
+    <section id="services" class="py-24 px-4 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Filings We Handle</h2>
+                <p class="text-slate-500 dark:text-gray-400">Comprehensive coverage for foreign investment reporting.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 1. FC-GPR -->
+                <div class="glass rounded-2xl p-8 hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors reveal border-t-4 border-t-theme-500"
+                    style="border-top-color: hsl(var(--hue), 80%, 60%)">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-file-import text-2xl text-slate-700 dark:text-white"></i>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Form FC-GPR</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-gray-400 text-sm mb-4">Mandatory for companies receiving Foreign
+                        Direct Investment (FDI) via capital instruments.</p>
+                    <div class="flex flex-col text-xs font-mono text-theme-700 dark:text-theme-500 font-bold space-y-1">
+                        <div class="flex items-center"><i class="far fa-clock mr-2"></i> Timeline: 30 days</div>
+                        <div class="text-slate-500 dark:text-gray-500 pl-6">from date of allotment</div>
+                    </div>
+                </div>
+
+                <!-- 2. FC-TRS -->
+                <div
+                    class="glass rounded-2xl p-8 hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors reveal delay-100 border-t-4 border-transparent hover:border-t-theme-500">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-exchange-alt text-2xl text-slate-700 dark:text-white"></i>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Form FC-TRS</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-gray-400 text-sm mb-4">Reporting transfer of shares/capital
+                        instruments between Residents and Non-Residents.</p>
+                    <div class="flex flex-col text-xs font-mono text-theme-700 dark:text-theme-500 font-bold space-y-1">
+                        <div class="flex items-center"><i class="far fa-clock mr-2"></i> Timeline: 60 days</div>
+                        <div class="text-slate-500 dark:text-gray-500 pl-6">from date of transfer/receipt</div>
+                    </div>
+                </div>
+
+                <!-- 3. LLP-I -->
+                <div
+                    class="glass rounded-2xl p-8 hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors reveal delay-200 border-t-4 border-transparent hover:border-t-theme-500">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-building text-2xl text-slate-700 dark:text-white"></i>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Form LLP-I</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-gray-400 text-sm mb-4">Reporting of Foreign Direct Investment
+                        (FDI) received by Limited Liability Partnerships.</p>
+                    <div class="flex flex-col text-xs font-mono text-theme-700 dark:text-theme-500 font-bold space-y-1">
+                        <div class="flex items-center"><i class="far fa-clock mr-2"></i> Timeline: 30 days</div>
+                        <div class="text-slate-500 dark:text-gray-500 pl-6">from date of receipt of funds</div>
+                    </div>
+                </div>
+
+                <!-- 4. LLP-II -->
+                <div
+                    class="glass rounded-2xl p-8 hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors reveal border-t-4 border-transparent hover:border-t-theme-500">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-handshake text-2xl text-slate-700 dark:text-white"></i>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Form LLP-II</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-gray-400 text-sm mb-4">Reporting for disinvestment or transfer of
+                        capital contribution in LLPs.</p>
+                    <div class="flex flex-col text-xs font-mono text-theme-700 dark:text-theme-500 font-bold space-y-1">
+                        <div class="flex items-center"><i class="far fa-clock mr-2"></i> Timeline: 60 days</div>
+                        <div class="text-slate-500 dark:text-gray-500 pl-6">from date of receipt of funds</div>
+                    </div>
+                </div>
+
+                <!-- 5. Form DI -->
+                <div
+                    class="glass rounded-2xl p-8 hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors reveal delay-100 border-t-4 border-transparent hover:border-t-theme-500">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-layer-group text-2xl text-slate-700 dark:text-white"></i>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Form DI</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-gray-400 text-sm mb-4">Declaration of Downstream Investment
+                        (Indirect Foreign Investment) by Indian entities.</p>
+                    <div class="flex flex-col text-xs font-mono text-theme-700 dark:text-theme-500 font-bold space-y-1">
+                        <div class="flex items-center"><i class="far fa-clock mr-2"></i> Immediate Reporting</div>
+                        <div class="text-slate-500 dark:text-gray-500 pl-6">upon making investment</div>
+                    </div>
+                </div>
+
+                <!-- 6. Advisory -->
+                <div class="glass rounded-2xl p-8 hover:bg-slate-50 dark:hover:bg-white/[0.03] transition-colors reveal delay-200 border-l-4"
+                    style="border-left-color: hsl(var(--hue), 70%, 50%)">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-question text-2xl text-slate-700 dark:text-white"></i>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Other Advisory</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-gray-400 text-sm mb-4">Amendments, Compounding, and resolution of
+                        historic delays or LSF (Late Submission Fees).</p>
+                    <div
+                        class="flex items-center text-xs font-mono underline font-semibold text-theme-700 dark:text-white">
+                        <a href="#contact">Contact for Custom Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Tables -->
+    <section id="pricing" class="py-24 px-4 relative bg-slate-100/[0.5] dark:bg-black/10">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-slate-900 dark:text-white text-center mb-12 reveal">Filing & Compliance
+                Plans</h2>
+
+            <!-- Setup Block -->
+            <div
+                class="max-w-5xl mx-auto glass p-8 rounded-2xl border dark:border-white/10 border-slate-200 mb-12 flex flex-col md:flex-row items-center justify-between reveal">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Entity & Business User Account
+                        Creation</h3>
+                    <p class="text-sm text-slate-600 dark:text-gray-400 max-w-2xl">
+                        Mandatory prerequisite for the RBI FIRMS portal. Includes entity registration, business user
+                        authorization setup, and documentation guidance.
+                    </p>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-slate-900 dark:text-white">₹7,500</div>
+                        <div class="text-xs text-slate-500">Per Account</div>
+                    </div>
+                    <a href="#contact"
+                        class="px-6 py-3 rounded-lg border border-slate-300 dark:border-white/20 text-slate-700 dark:text-white text-sm font-semibold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Select</a>
+                </div>
+            </div>
+
+            <!-- Recurring Plans Grid -->
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Basic -->
+                <div
+                    class="glass p-8 rounded-2xl border dark:border-white/5 border-slate-200 flex flex-col hover:border-slate-300 dark:hover:border-white/20 transition-all reveal hover:shadow-xl">
+                    <div class="mb-4 text-slate-400 font-serif italic">Basic Filing</div>
+                    <div class="mb-6"><span
+                            class="text-3xl font-bold text-slate-900 dark:text-white">₹10,000</span><span
+                            class="text-slate-500 text-sm"> / filing</span></div>
+                    <ul class="space-y-4 mb-8 text-sm text-slate-600 dark:text-gray-300 flex-1">
+                        <li class="flex gap-3"><i class="fa-solid fa-check mt-1 text-slate-400"></i> Form Preparation
+                        </li>
+                        <li class="flex gap-3"><i class="fa-solid fa-check mt-1 text-slate-400"></i> Submission Handling
+                        </li>
+                        <li class="flex gap-3"><i class="fa-solid fa-check mt-1 text-slate-400"></i> Basic Document
+                            Check</li>
+                        <li class="flex gap-3"><i class="fa-solid fa-check mt-1 text-slate-400"></i> Email Support</li>
+                    </ul>
+                    <a href="#contact"
+                        class="block w-full py-3 border border-slate-300 dark:border-white/20 rounded-lg text-center text-slate-700 dark:text-white text-sm font-semibold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">Get
+                        Started</a>
+                </div>
+
+                <!-- Standard (RECOMMENDED) - HIGHLIGHTED -->
+                <div class="relative w-full rounded-2xl group isolate transform md:-translate-y-4 reveal delay-100">
+                    <!-- Glow Layer -->
+                    <div
+                        class="absolute -inset-[2px] rounded-2xl bg-gradient-to-r from-theme-400 to-theme-600 blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt">
+                    </div>
+
+                    <!-- Main Card -->
+                    <div
+                        class="relative h-full bg-white dark:bg-[#0a0a0f] rounded-2xl p-8 flex flex-col overflow-hidden">
+                        <div class="absolute top-0 right-0 px-4 py-1 text-xs font-bold text-white rounded-bl-xl"
+                            style="background-color: hsl(var(--hue), 80%, 50%)">RECOMMENDED</div>
+
+                        <div class="mb-4 text-theme-600 dark:text-theme-100 font-serif italic">Standard Package</div>
+                        <div class="mb-6"><span
+                                class="text-4xl font-bold text-slate-900 dark:text-white">₹15,000</span><span
+                                class="text-slate-500 dark:text-gray-400 text-sm"> / filing</span></div>
+
+                        <ul class="space-y-4 mb-8 text-sm text-slate-700 dark:text-gray-200 flex-1">
+                            <li class="flex gap-3"><i
+                                    class="fa-solid fa-check mt-1 text-theme-600 dark:text-theme-200"></i>
+                                <strong>Everything in Basic</strong></li>
+                            <li class="flex gap-3"><i
+                                    class="fa-solid fa-check mt-1 text-theme-600 dark:text-theme-200"></i> Liaison with
+                                AD Bank</li>
+                            <li class="flex gap-3"><i
+                                    class="fa-solid fa-check mt-1 text-theme-600 dark:text-theme-200"></i> Detailed
+                                Document Audit</li>
+                            <li class="flex gap-3"><i
+                                    class="fa-solid fa-check mt-1 text-theme-600 dark:text-theme-200"></i> Query
+                                Resolution</li>
+                        </ul>
+                        <a href="#contact"
+                            class="block w-full py-3 text-white rounded-lg text-center text-sm font-bold shadow-lg hover:brightness-110 transition-all"
+                            style="background-color: hsl(var(--hue), 80%, 40%)">Get Started</a>
+                    </div>
+                </div>
+
+                <!-- Enterprise -->
+                <div
+                    class="glass p-8 rounded-2xl border dark:border-white/5 border-slate-200 flex flex-col hover:border-slate-300 dark:hover:border-white/20 transition-all reveal delay-200 hover:shadow-xl">
+                    <div class="mb-4 text-slate-400 font-serif italic">Enterprise</div>
+                    <div class="mb-6"><span
+                            class="text-3xl font-bold text-slate-900 dark:text-white">₹18,000</span><span
+                            class="text-slate-500 text-sm"> / filing</span></div>
+                    <ul class="space-y-4 mb-8 text-sm text-slate-600 dark:text-gray-300 flex-1">
+                        <li class="flex gap-3"><i class="fa-solid fa-check mt-1 text-slate-400"></i> <strong>Everything
+                                in Standard</strong></li>
+                        <li class="flex gap-3"><i class="fa-solid fa-check mt-1 text-slate-400"></i> Dedicated Account
+                            Manager</li>
+                        <li class="flex gap-3"><i class="fa-solid fa-check mt-1 text-slate-400"></i> 24/7 Priority
+                            Support</li>
+                        <li class="flex gap-3"><i class="fa-solid fa-check mt-1 text-slate-400"></i> Complex Structuring
+                            Support</li>
+                    </ul>
+                    <a href="#contact"
+                        class="block w-full py-3 border border-slate-300 dark:border-white/20 rounded-lg text-center text-slate-700 dark:text-white text-sm font-semibold hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">Get
+                        Started</a>
+                </div>
+            </div>
+
+            <p class="text-center text-xs text-slate-500 mt-8 reveal">
+                Prices include GST. T&C apply. Custom pricing available for bulk filings.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section id="contact" class="py-24 px-4">
+        <div
+            class="max-w-xl mx-auto bg-white dark:bg-[#0a0a0f] border border-slate-200 dark:border-white/10 p-8 rounded-2xl shadow-2xl reveal">
+            <div class="text-center mb-8">
+                <i class="fa-solid fa-paper-plane text-3xl mb-4 text-slate-800 dark:text-white"></i>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Send Inquiry</h2>
+                <p class="text-slate-600 dark:text-gray-400 text-sm mt-2">Professional assistance is just a click away.
+                </p>
+            </div>
+
+            <form onsubmit="handleForm(event)" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label
+                            class="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold tracking-wider">Name</label>
+                        <input type="text"
+                            class="w-full bg-slate-50 dark:bg-white/10 border border-slate-300 dark:border-white/10 rounded-lg p-3 text-slate-900 dark:text-white focus:outline-none focus:border-theme-500 dark:focus:border-white transition-colors"
+                            placeholder="Full Name">
+                    </div>
+                    <div class="space-y-1">
+                        <label
+                            class="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold tracking-wider">Mobile</label>
+                        <input type="tel"
+                            class="w-full bg-slate-50 dark:bg-white/10 border border-slate-300 dark:border-white/10 rounded-lg p-3 text-slate-900 dark:text-white focus:outline-none focus:border-theme-500 dark:focus:border-white transition-colors"
+                            placeholder="+91">
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold tracking-wider">Service
+                        Needed</label>
+                    <select
+                        class="w-full bg-slate-50 dark:bg-white/10 border border-slate-300 dark:border-white/10 rounded-lg p-3 text-slate-900 dark:text-gray-300 focus:outline-none focus:border-theme-500 dark:focus:border-white transition-colors">
+                        <option class="text-slate-900 bg-white dark:bg-slate-900 dark:text-white">Form FC-GPR</option>
+                        <option class="text-slate-900 bg-white dark:bg-slate-900 dark:text-white">Form FC-TRS</option>
+                        <option class="text-slate-900 bg-white dark:bg-slate-900 dark:text-white">LLP Filing (Form I /
+                            II)</option>
+                        <option class="text-slate-900 bg-white dark:bg-slate-900 dark:text-white">Form DI</option>
+                        <option class="text-slate-900 bg-white dark:bg-slate-900 dark:text-white">Entity Account Setup
+                        </option>
+                        <option class="text-slate-900 bg-white dark:bg-slate-900 dark:text-white">Other</option>
+                    </select>
+                </div>
+
+                <div class="space-y-1">
+                    <label
+                        class="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold tracking-wider">Email</label>
+                    <input type="email"
+                        class="w-full bg-slate-50 dark:bg-white/10 border border-slate-300 dark:border-white/10 rounded-lg p-3 text-slate-900 dark:text-white focus:outline-none focus:border-theme-500 dark:focus:border-white transition-colors"
+                        placeholder="email@company.com">
+                </div>
+
+                <div class="space-y-1">
+                    <label
+                        class="text-xs text-slate-500 dark:text-gray-500 uppercase font-bold tracking-wider">Message</label>
+                    <textarea
+                        class="w-full bg-slate-50 dark:bg-white/10 border border-slate-300 dark:border-white/10 rounded-lg p-3 text-slate-900 dark:text-white focus:outline-none focus:border-theme-500 dark:focus:border-white transition-colors"
+                        rows="3"></textarea>
+                </div>
+
+                <button type="submit"
+                    class="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-black font-bold rounded-lg hover:bg-slate-700 dark:hover:bg-gray-200 transition-colors flex justify-center items-center gap-2 shadow-lg">
+                    Submit Inquiry
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+        class="border-t dark:border-white/5 border-slate-200 py-12 px-4 bg-slate-100 dark:bg-[#050508] relative z-10 transition-colors">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fas fa-file-contract text-theme-600 dark:text-theme-500 text-xl"
+                        style="color: hsl(var(--hue), 80%, 50%)"></i>
+                    <span class="text-xl font-serif font-bold text-slate-900 dark:text-white">ReportRight.</span>
+                </div>
+                <p class="text-slate-500 dark:text-gray-500 text-sm max-w-sm mb-6">
+                    FEMA and RBI reporting consultancy services. We act as your specialized compliance arm to ensure
+                    foreign investments are reported correctly to the Reserve Bank of India.
+                </p>
+
+                <!-- NEW PROMINENT CONTACT BUTTONS -->
+                <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                    <a href="mailto:info@reportright.in"
+                        class="flex items-center justify-center gap-3 px-5 py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:opacity-90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                        <i class="fa-solid fa-envelope"></i> info@reportright.in
+                    </a>
+                    <button
+                        class="flex items-center justify-center gap-3 px-5 py-3 rounded-xl bg-[#25D366] text-white font-bold hover:brightness-110 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
+                        onclick="alert('Please add your WhatsApp link here.')">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp Us
+                    </button>
+                </div>
+
+            </div>
+
+            <div>
+                <h4 class="text-slate-900 dark:text-white font-bold mb-4">Filings</h4>
+                <ul class="space-y-2 text-sm text-slate-500 dark:text-gray-500">
+                    <li><a href="#services" class="hover:text-slate-900 dark:hover:text-white">FC-GPR</a></li>
+                    <li><a href="#services" class="hover:text-slate-900 dark:hover:text-white">FC-TRS</a></li>
+                    <li><a href="#services" class="hover:text-slate-900 dark:hover:text-white">LLP Forms</a></li>
+                    <li><a href="#services" class="hover:text-slate-900 dark:hover:text-white">Form DI</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-slate-900 dark:text-white font-bold mb-4">Legal & Support</h4>
+                <ul class="space-y-2 text-sm text-slate-500 dark:text-gray-500">
+                    <li><a href="#pricing" class="hover:text-slate-900 dark:hover:text-white">Pricing</a></li>
+                    <li><a href="#contact" class="hover:text-slate-900 dark:hover:text-white">Contact Us</a></li>
+                    <li><button onclick="toggleModal('privacy')"
+                            class="hover:text-slate-900 dark:hover:text-white text-left">Privacy Policy</button></li>
+                    <li><button onclick="toggleModal('terms')"
+                            class="hover:text-slate-900 dark:hover:text-white text-left">Terms of Engagement</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto border-t border-slate-200 dark:border-white/5 pt-8 pb-8 px-4 flex flex-col md:flex-row justify-between text-xs text-slate-500 gap-4 md:gap-0">
+            <p>&copy; 2025 ReportRight. Mumbai, India.</p>
+            <p>Compliance Simplified.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modalOverlay"
+        class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div id="modalContent"
+            class="bg-white dark:bg-[#101010] border border-slate-200 dark:border-white/10 rounded-2xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto transform scale-95 transition-transform duration-300 shadow-2xl">
+            <div
+                class="p-6 border-b border-slate-100 dark:border-white/10 flex justify-between items-center sticky top-0 bg-white dark:bg-[#101010] z-10">
+                <h3 id="modalTitle" class="text-xl font-bold text-slate-900 dark:text-white font-serif">Policy</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-900 dark:hover:text-white"><i
+                        class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div id="modalBody"
+                class="p-6 text-slate-600 dark:text-gray-400 space-y-4 text-sm leading-relaxed font-light"></div>
+        </div>
+    </div>
+
+    <!-- Script Logic -->
+    <script>
+        // 1. DYNAMIC COLOR
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollFraction = scrollTop / docHeight;
+            let currentHue = 265 - (scrollFraction * 85);
+            document.documentElement.style.setProperty('--hue', currentHue);
+            document.getElementById('progressBar').style.width = (scrollFraction * 100) + '%';
+            revealElements();
+        });
+
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // 2. ANIMATIONS
+        const revealElements = () => {
+            const reveals = document.querySelectorAll('.reveal');
+            const windowHeight = window.innerHeight;
+            reveals.forEach((reveal) => {
+                if (reveal.getBoundingClientRect().top < windowHeight - 150) reveal.classList.add('active');
+            });
+        }
+
+        // Run immediately, on DOM ready, and on load to be safe
+        document.addEventListener('DOMContentLoaded', revealElements);
+        window.addEventListener('load', revealElements);
+        window.addEventListener('scroll', revealElements); // Ensure scroll triggers it too
+
+        // Safety fallback: Force reveal after 500ms if something hangs
+        setTimeout(() => {
+            document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+        }, 500);
+
+        // 3. TYPEWRITER EFFECT (SENTENCE CASE)
+        const textElement = document.getElementById('typewriter-text');
+        const texts = [
+            "tangled compliance web.",
+            "regulatory headaches.",
+            "relationship with the RBI.",
+            "statutory burdens.",
+            "post-funding to-do list."
+        ];
+
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+
+        function typeWriter() {
+            const currentText = texts[textIndex];
+
+            if (isDeleting) {
+                textElement.innerText = currentText.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 40;
+            } else {
+                textElement.innerText = currentText.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 100;
+            }
+
+            if (!isDeleting && charIndex === currentText.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(typeWriter, typeSpeed);
+        }
+        document.addEventListener('DOMContentLoaded', typeWriter);
+
+        // 4. MODALS & MENU & FORM
+        const modalData = {
+            privacy: { title: "Privacy Policy", body: `<p>We strictly adhere to the Information Technology Act, 2000...</p>` },
+            terms: { title: "Terms of Engagement", body: `<p>ReportRight provides advisory and filing assistance services...</p>` }
+        };
+        function toggleModal(type) {
+            const overlay = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            if (type && modalData[type]) {
+                title.innerText = modalData[type].title;
+                body.innerHTML = modalData[type].body;
+                overlay.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    document.getElementById('modalContent').classList.remove('scale-95');
+                    document.getElementById('modalContent').classList.add('scale-100');
+                }, 10);
+            }
+        }
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.add('opacity-0');
+            document.getElementById('modalContent').classList.add('scale-95');
+            document.getElementById('modalContent').classList.remove('scale-100');
+            setTimeout(() => { overlay.classList.add('hidden'); }, 300);
+        }
+        function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+        function handleForm(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const original = btn.innerText;
+            btn.innerText = 'Transmitting...';
+            btn.classList.add('bg-slate-500');
+            setTimeout(() => {
+                alert('Inquiry sent.');
+                btn.innerText = 'Sent';
+                e.target.reset();
+                setTimeout(() => { btn.innerText = original; btn.classList.remove('bg-slate-500'); }, 2000);
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>
