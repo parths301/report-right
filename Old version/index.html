@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReportRight | RBI Foreign Investment Reporting Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern layout helpers */
+        .hero-gradient {
+            background: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.4), transparent 40%),
+                radial-gradient(circle at 80% 0%, rgba(56, 189, 248, 0.35), transparent 45%),
+                linear-gradient(135deg, #020617 0%, #0f172a 40%, #020617 100%);
+        }
+
+        .card-hover {
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 60px rgba(15, 23, 42, 0.15);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.25);
+            backdrop-filter: blur(18px);
+        }
+
+        .tag-pill {
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 9999px;
+            padding: 0.25rem 0.85rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .radial-border {
+            border: 1px solid transparent;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.5), transparent 70%) border-box;
+        }
+
+        .outline-button {
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            border-radius: 9999px;
+            padding: 0.75rem 1.5rem;
+            color: #e2e8f0;
+            font-weight: 600;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .outline-button:hover {
+            background: rgba(99, 102, 241, 0.15);
+            color: #fff;
+        }
+
+        .pricing-tier {
+            border-radius: 1.25rem;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.98));
+        }
+
+        .pricing-tier.featured {
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(56, 189, 248, 0.15));
+            box-shadow: 0 35px 60px rgba(15, 23, 42, 0.35);
+        }
+
+        .timeline-line::before {
+            content: "";
+            position: absolute;
+            inset: 0 50%;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+            opacity: 0.4;
+        }
+
+        .stat-card {
+            border-radius: 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .illustration-panel {
+            background: #eef2ff;
+            border: 2px dashed rgba(30, 58, 138, 0.5);
+            border-radius: 1.5rem;
+            padding: 2rem;
+        }
+
+        .line-illustration {
+            width: 100%;
+            height: 320px;
+        }
+
+        .line-illustration path,
+        .line-illustration rect,
+        .line-illustration line,
+        .line-illustration circle {
+            stroke: #1e3a8a;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .line-illustration .accent {
+            fill: rgba(59, 130, 246, 0.2);
+        }
+
+        .process-card {
+            text-align: center;
+        }
+
+        .process-number {
+            height: 48px;
+            width: 48px;
+            border-radius: 9999px;
+            background-color: #1e40af;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            z-index: 50;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            max-width: 720px;
+            width: 100%;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: #1f2937;
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-file-contract text-blue-800 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-900">ReportRight</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="#services"
+                        class="text-gray-500 hover:text-blue-800 px-3 py-2 text-sm font-medium transition-all">Services</a>
+                    <a href="#about"
+                        class="text-gray-500 hover:text-blue-800 px-3 py-2 text-sm font-medium transition-all">About</a>
+                    <a href="#process"
+                        class="text-gray-500 hover:text-blue-800 px-3 py-2 text-sm font-medium transition-all">Process</a>
+                    <a href="#pricing"
+                        class="text-gray-500 hover:text-blue-800 px-3 py-2 text-sm font-medium transition-all">Pricing</a>
+                    <a href="#contact"
+                        class="text-gray-500 hover:text-blue-800 px-3 py-2 text-sm font-medium transition-all">Contact</a>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="#contact"
+                        class="hidden md:inline-flex items-center px-4 py-2 border border-blue-800 text-sm font-semibold text-blue-800 rounded-md hover:bg-blue-50 transition-all">
+                        Call for Quote
+                    </a>
+                    <div class="-mr-2 flex items-center md:hidden space-x-2">
+                        <a href="#contact"
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-semibold text-white bg-blue-800 rounded-md shadow hover:bg-blue-900 transition-all">
+                            Call for Quote
+                        </a>
+                        <button type="button"
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-800"
+                            aria-controls="mobile-menu" aria-expanded="false" onclick="toggleMobileMenu()">
+                            <span class="sr-only">Open main menu</span>
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="#services"
+                    class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-blue-800 hover:bg-gray-50 transition-all">Services</a>
+                <a href="#about"
+                    class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-blue-800 hover:bg-gray-50 transition-all">About</a>
+                <a href="#process"
+                    class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-blue-800 hover:bg-gray-50 transition-all">Process</a>
+                <a href="#pricing"
+                    class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-blue-800 hover:bg-gray-50 transition-all">Pricing</a>
+                <a href="#contact"
+                    class="block px-3 py-2 text-base font-medium text-gray-500 hover:text-blue-800 hover:bg-gray-50 transition-all">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-gradient text-white pt-28 pb-32">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="inline-flex items-center space-x-2 bg-white/10 border border-white/20 px-4 py-1.5 rounded-full">
+                        <i class="fas fa-shield-alt text-teal-200 text-sm"></i>
+                        <span class="text-sm font-semibold tracking-wide uppercase">FEMA / RBI Compliance Ops</span>
+                    </div>
+                    <div>
+                        <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">
+                            End-to-end RBI reporting support built for <span class="text-blue-300">modern capital flows</span>
+                        </h1>
+                        <p class="mt-6 text-lg text-slate-200 max-w-2xl">
+                            ReportRight pairs senior FEMA experts with automation-first tooling so your FC-GPR, FC-TRS and downstream filings stay compliant, auditable and fast—no matter the scale of your transactions.
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                        <a href="#contact"
+                            class="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 px-8 py-3 text-base font-semibold shadow-2xl shadow-blue-600/40 hover:opacity-90 transition">
+                            Book Compliance Call
+                        </a>
+                        <a href="#pricing" class="outline-button">
+                            View transparent pricing
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <div class="stat-card p-4 text-center">
+                            <p class="text-3xl font-bold text-blue-200">2,500+</p>
+                            <p class="text-sm text-slate-400 mt-2">RBI forms filed</p>
+                        </div>
+                        <div class="stat-card p-4 text-center">
+                            <p class="text-3xl font-bold text-blue-200">48 hrs</p>
+                            <p class="text-sm text-slate-400 mt-2">Average turnaround</p>
+                        </div>
+                        <div class="stat-card p-4 text-center">
+                            <p class="text-3xl font-bold text-blue-200">100%</p>
+                            <p class="text-sm text-slate-400 mt-2">Bank-ready dossiers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden">
+                    <div class="absolute -top-10 -left-10 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-indigo-400/30 rounded-full blur-3xl"></div>
+                    <div class="relative space-y-6">
+                        <div class="flex items-center justify-between border border-white/10 rounded-2xl px-5 py-4">
+                            <div>
+                                <p class="text-sm uppercase tracking-wide text-slate-400">Active Mandate</p>
+                                <p class="text-lg font-semibold">FC-GPR | Series B</p>
+                            </div>
+                            <span class="tag-pill">Under Review</span>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 p-5 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-slate-400">AD Bank coordination</p>
+                                    <p class="text-2xl font-semibold">Aligned</p>
+                                </div>
+                                <i class="fas fa-comments text-blue-300 text-3xl"></i>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-slate-400">Documents validated</p>
+                                    <p class="text-2xl font-semibold">12/12</p>
+                                </div>
+                                <i class="fas fa-file-alt text-indigo-300 text-3xl"></i>
+                            </div>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 p-5">
+                            <p class="text-sm text-slate-400 uppercase tracking-wide">Compliance Timeline</p>
+                            <div class="mt-4 space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span>Pre-filing review</span>
+                                    <span class="text-blue-200 text-sm">Completed</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span>RBI submission</span>
+                                    <span class="text-blue-200 text-sm">Scheduled</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span>Bank closure</span>
+                                    <span class="text-blue-200 text-sm">Awaiting</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+                <div class="lg:col-span-6">
+                    <div class="illustration-panel">
+                        <svg class="line-illustration" viewBox="0 0 400 320" role="img"
+                            aria-labelledby="about-illustration-title">
+                            <title id="about-illustration-title">Line drawing of advisors collaborating</title>
+                            <rect class="accent" x="40" y="60" width="320" height="180" rx="18"></rect>
+                            <line x1="60" y1="110" x2="340" y2="110"></line>
+                            <line x1="60" y1="150" x2="340" y2="150"></line>
+                            <circle cx="150" cy="230" r="32"></circle>
+                            <circle cx="250" cy="230" r="32"></circle>
+                            <line x1="180" y1="230" x2="220" y2="230"></line>
+                            <path d="M120 260 Q200 300 280 260"></path>
+                            <rect x="90" y="80" width="220" height="30" rx="8"></rect>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-12 lg:mt-0 lg:col-span-6 lg:flex lg:items-center">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                            About ReportRight
+                        </h2>
+                        <p class="mt-3 text-lg text-gray-600">
+                            Ar ReportRight, we understand the complexities of reporting the movement of foreign capital
+                            in business. Our team of experienced consultants who bring their extensive exertiese to
+                            ensure your compliance needs are effectively met.
+                        </p>
+                        <div class="mt-8 grid gap-4 md:grid-cols-2">
+                            <div class="border rounded-2xl p-5">
+                                <div class="flex items-center space-x-3">
+                                    <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-700"><i class="fas fa-coins"></i></span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Sector coverage</p>
+                                        <p class="text-sm text-gray-500">Startups, PE/VC, Infra, NBFC</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border rounded-2xl p-5">
+                                <div class="flex items-center space-x-3">
+                                    <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-700"><i class="fas fa-scale-balanced"></i></span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Regulatory IQ</p>
+                                        <p class="text-sm text-gray-500">FEMA, Companies Act, PMLA</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border rounded-2xl p-5">
+                                <div class="flex items-center space-x-3">
+                                    <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-teal-50 text-teal-700"><i class="fas fa-robot"></i></span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Automated QA</p>
+                                        <p class="text-sm text-gray-500">Document & timeline trackers</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border rounded-2xl p-5">
+                                <div class="flex items-center space-x-3">
+                                    <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-purple-50 text-purple-700"><i class="fas fa-people-arrows"></i></span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Advisor network</p>
+                                        <p class="text-sm text-gray-500">Bankers, lawyers, transaction teams</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="py-20 bg-slate-950 text-white">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 space-y-4">
+                <p class="tag-pill inline-block">Why compliance teams switch</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold">A single partner for filings, advisors and audit trails</h2>
+                <p class="text-slate-300 max-w-3xl mx-auto">
+                    Built with input from CFOs, counsels and bankers—ReportRight keeps every stakeholder aligned while our ops team moves your forms through RBI and AD bank reviews.
+                </p>
+            </div>
+            <div class="grid gap-6 md:grid-cols-2">
+                <div class="glass-card rounded-3xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-semibold">Outcome guarantees</h3>
+                        <span class="tag-pill">SLA-backed</span>
+                    </div>
+                    <ul class="space-y-4 text-slate-200">
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-emerald-300 mt-1"></i>
+                            <span>Dual-review workflow to eliminate AD bank rejections.</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-emerald-300 mt-1"></i>
+                            <span>Escalation playbooks for sectoral cap / pricing exceptions.</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-emerald-300 mt-1"></i>
+                            <span>Dedicated FEMA desk that liaises with lawyers, bankers and transaction advisors.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="glass-card rounded-3xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-semibold">Operational maturity</h3>
+                        <span class="tag-pill">Built for scale</span>
+                    </div>
+                    <ul class="space-y-4 text-slate-200">
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-emerald-300 mt-1"></i>
+                            <span>Live dashboards mirror Hostinger-style clarity—status, owners and next actions.</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-emerald-300 mt-1"></i>
+                            <span>Secure data rooms with audit logs and automated reminders.</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <i class="fas fa-check text-emerald-300 mt-1"></i>
+                            <span>24x7 response coverage with FEMA specialists on chat, mail and phone.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 space-y-4">
+                <p class="tag-pill inline-block">Our Process</p>
+                <h2 class="text-3xl font-extrabold">Compliance pipeline engineered for velocity</h2>
+                <p class="text-slate-300 max-w-2xl mx-auto">
+                    Every mandate flows through a 5-step playbook with clear owners, timestamps and approvals.
+                </p>
+            </div>
+            <div class="relative timeline-line">
+                <div class="grid gap-8 md:grid-cols-2 relative z-10">
+                    <div class="process-card border border-white/10 rounded-3xl p-6 text-center bg-white/5">
+                        <div class="process-number mb-4">1</div>
+                        <h3 class="text-xl font-semibold">Discovery sprints</h3>
+                        <p class="mt-2 text-slate-200">Capture transaction narrative, instruments, stakeholders and deadlines.</p>
+                    </div>
+                    <div class="process-card border border-white/10 rounded-3xl p-6 text-center bg-white/5">
+                        <div class="process-number mb-4">2</div>
+                        <h3 class="text-xl font-semibold">Document QA</h3>
+                        <p class="mt-2 text-slate-200">Automated + manual checks ensure share certs, valuations, FEMA declarations are audit-ready.</p>
+                    </div>
+                    <div class="process-card border border-white/10 rounded-3xl p-6 text-center bg-white/5">
+                        <div class="process-number mb-4">3</div>
+                        <h3 class="text-xl font-semibold">Bank coordination</h3>
+                        <p class="mt-2 text-slate-200">We liaise with AD Category-I banks, lawyers and custodians to sync requirements.</p>
+                    </div>
+                    <div class="process-card border border-white/10 rounded-3xl p-6 text-center bg-white/5">
+                        <div class="process-number mb-4">4</div>
+                        <h3 class="text-xl font-semibold">RBI filing</h3>
+                        <p class="mt-2 text-slate-200">Submission on FIRMS portal plus clarifications handled by our FEMA desk.</p>
+                    </div>
+                    <div class="process-card border border-white/10 rounded-3xl p-6 text-center bg-white/5 md:col-span-2">
+                        <div class="process-number mb-4">5</div>
+                        <h3 class="text-xl font-semibold">Post-filing support</h3>
+                        <p class="mt-2 text-slate-200">Continuous updates until acknowledgement, including resubmissions and RBI responses.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 hero-gradient text-white">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 space-y-4">
+                <p class="tag-pill inline-block border-white/30 text-white/90">Pricing</p>
+                <h2 class="text-4xl font-extrabold">Transparent packs with Hostinger-inspired clarity</h2>
+                <p class="text-slate-300 max-w-3xl mx-auto">Every engagement includes banker liaison, RBI submission and status reporting. Prices include GST. *T&amp;C apply.</p>
+            </div>
+            <div class="grid gap-6 lg:grid-cols-4">
+                <div class="pricing-tier p-6 flex flex-col">
+                    <p class="text-sm uppercase tracking-wide text-slate-400 mb-2">Entity Setup</p>
+                    <h3 class="text-2xl font-semibold mb-4">Entity &amp; Business User Creation</h3>
+                    <div class="text-4xl font-bold">₹7,500</div>
+                    <p class="text-sm text-slate-300 mt-1 mb-6">Per entity, inclusive of GST</p>
+                    <ul class="space-y-3 text-slate-200 flex-1">
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>Entity master and BU account</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>Document templates &amp; validation</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>Portal walkthrough</span></li>
+                    </ul>
+                    <a href="#contact" class="mt-6 inline-flex justify-center rounded-full bg-white/10 px-4 py-2 font-semibold hover:bg-white/20 transition">Start setup</a>
+                </div>
+                <div class="pricing-tier p-6 flex flex-col">
+                    <p class="text-sm uppercase tracking-wide text-slate-400 mb-2">Filing Lite</p>
+                    <h3 class="text-2xl font-semibold mb-4">Basic Filing</h3>
+                    <div class="text-4xl font-bold">₹10,000</div>
+                    <p class="text-sm text-slate-300 mt-1 mb-6">Per form, inclusive of GST</p>
+                    <ul class="space-y-3 text-slate-200 flex-1">
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>Form prep &amp; submission</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>Basic document review</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>Email + ticketing support</span></li>
+                    </ul>
+                    <a href="#contact" class="mt-6 inline-flex justify-center rounded-full bg-white/10 px-4 py-2 font-semibold hover:bg-white/20 transition">Choose Basic</a>
+                </div>
+                <div class="pricing-tier featured p-6 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <p class="text-sm uppercase tracking-wide text-slate-400">Most Popular</p>
+                        <span class="tag-pill bg-white/20 border-white/40 text-white">Recommended</span>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Standard Package</h3>
+                    <div class="text-4xl font-bold">₹15,000</div>
+                    <p class="text-sm text-slate-100 mt-1 mb-6">Per filing, inclusive of GST</p>
+                    <ul class="space-y-3 text-white flex-1">
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-200 mt-1"></i><span>Detailed document review</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-200 mt-1"></i><span>Priority FEMA specialists</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-200 mt-1"></i><span>We liaise with bankers, lawyers &amp; advisors</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-200 mt-1"></i><span>Live tracker dashboard</span></li>
+                    </ul>
+                    <a href="#contact" class="mt-6 inline-flex justify-center rounded-full bg-white text-slate-900 px-4 py-3 font-semibold shadow-lg shadow-slate-900/40 hover:opacity-90 transition">Go Standard</a>
+                </div>
+                <div class="pricing-tier p-6 flex flex-col">
+                    <p class="text-sm uppercase tracking-wide text-slate-400 mb-2">All-in Enterprise</p>
+                    <h3 class="text-2xl font-semibold mb-4">Enterprise Pack</h3>
+                    <div class="text-4xl font-bold">₹18,000</div>
+                    <p class="text-sm text-slate-300 mt-1 mb-6">Per filing, inclusive of GST</p>
+                    <ul class="space-y-3 text-slate-200 flex-1">
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>All Standard features</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>Dedicated account manager</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>Document preparation &amp; notarisation support</span></li>
+                        <li class="flex items-start space-x-3"><i class="fas fa-check text-emerald-300 mt-1"></i><span>24/7 priority response</span></li>
+                    </ul>
+                    <a href="#contact" class="mt-6 inline-flex justify-center rounded-full bg-white/10 px-4 py-2 font-semibold hover:bg-white/20 transition">Talk to sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-slate-950 text-white">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-10">
+                <div class="space-y-6">
+                    <p class="tag-pill inline-block border-white/30 text-white">Talk to us</p>
+                    <h2 class="text-4xl font-extrabold">Ready to fast-track your filings?</h2>
+                    <p class="text-slate-300">Share a few details and our FEMA desk will revert with a tailored playbook within one business day.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/10"><i class="fas fa-envelope text-white"></i></span>
+                            <div>
+                                <p class="text-sm uppercase tracking-wide text-slate-400">Email</p>
+                                <p class="text-lg font-semibold">info@reportright.in</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/10"><i class="fas fa-globe text-white"></i></span>
+                            <div>
+                                <p class="text-sm uppercase tracking-wide text-slate-400">Portal</p>
+                                <p class="text-lg font-semibold">www.reportright.in</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card rounded-3xl p-8">
+                    <h3 class="text-2xl font-semibold mb-6">Send us a message</h3>
+                    <form class="space-y-5" id="contactForm" onsubmit="handleSubmit(event)">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-slate-300 mb-1">Name</label>
+                            <input type="text" name="name" id="name"
+                                class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                placeholder="Your name">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-slate-300 mb-1">Email</label>
+                            <input type="email" name="email" id="email"
+                                class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                placeholder="your@email.com">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-slate-300 mb-1">Phone</label>
+                            <input type="text" name="phone" id="phone"
+                                class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                placeholder="+91 98765 43210">
+                        </div>
+                        <div>
+                            <label for="service" class="block text-sm font-medium text-slate-300 mb-1">Service Needed</label>
+                            <select id="service" name="service"
+                                class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <option>Select a service</option>
+                                <option>Form FC-GPR</option>
+                                <option>Form FC-TRS</option>
+                                <option>Form LLP-I</option>
+                                <option>Form LLP-II</option>
+                                <option>Form DI</option>
+                                <option>Entity & Business User Account Creation</option>
+                                <option>Other Filing</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-slate-300 mb-1">Message</label>
+                            <textarea id="message" name="message" rows="4"
+                                class="w-full rounded-2xl bg-white/5 border border-white/10 px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                placeholder="Tell us about your filing requirements"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 py-3 font-semibold shadow-xl hover:opacity-90 transition">
+                            Submit inquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="col-span-2">
+                    <h3 class="text-white text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-file-contract text-blue-400 mr-2"></i>
+                        ReportRight
+                    </h3>
+                    <p class="text-gray-400 text-sm">
+                        Your trusted partner for RBI foreign investment reporting and compliance services.
+                    </p>
+                    <div class="mt-4 flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-all">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-white text-sm font-semibold tracking-wider uppercase mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#services" class="text-gray-400 hover:text-white text-sm transition-all">Form
+                                FC-GPR</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white text-sm transition-all">Form
+                                FC-TRS</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white text-sm transition-all">Form
+                                LLP-I/II</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white text-sm transition-all">Form
+                                DI</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-white text-sm transition-all">Other
+                                Filings</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white text-sm font-semibold tracking-wider uppercase mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-400 hover:text-white text-sm transition-all">About Us</a>
+                        </li>
+                        <li><a href="#process" class="text-gray-400 hover:text-white text-sm transition-all">Our
+                                Process</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-white text-sm transition-all">Pricing</a>
+                        </li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm transition-all">Blog</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white text-sm transition-all">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between">
+                <p class="text-gray-400 text-sm">
+                    &copy; 2025 ReportRight. All rights reserved.
+                </p>
+                <div class="mt-4 md:mt-0 space-x-6">
+                    <button type="button" data-modal-target="privacyModal"
+                        class="text-gray-400 hover:text-white text-sm transition-all">Privacy Policy</button>
+                    <button type="button" data-modal-target="termsModal"
+                        class="text-gray-400 hover:text-white text-sm transition-all">Terms of Service</button>
+                    <button type="button" data-modal-target="complianceModal"
+                        class="text-gray-400 hover:text-white text-sm transition-all">Compliance</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Overlays -->
+    <div id="privacyModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content relative">
+            <button type="button" class="modal-close" data-modal-close aria-label="Close Privacy Policy">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Privacy Policy</h3>
+            <p class="text-gray-600 mb-4">
+                ReportRight processes client data in line with the Information Technology Act, 2000, the SPDI Rules, 2011, and the Digital Personal Data Protection Act, 2023. We only collect the documents necessary to execute RBI filings and store them in encrypted repositories with role-based access.
+            </p>
+            <ul class="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                <li>Explicit consent before onboarding, describing purposes, retention cycles, and cross-border data transfers.</li>
+                <li>Access logging plus confidentiality agreements for every analyst handling FEMA documentation.</li>
+                <li>Right to review, correct, or request deletion of data as mandated by Indian privacy regulations.</li>
+            </ul>
+            <p class="text-gray-600">
+                We share data with Authorized Dealer banks, lawyers, or auditors only when instructed in writing, ensuring compliance with Section 43A of the IT Act and CERT-In advisories.
+            </p>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content relative">
+            <button type="button" class="modal-close" data-modal-close aria-label="Close Terms of Service">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Terms of Service</h3>
+            <p class="text-gray-600 mb-4">
+                These terms are governed by the laws of India, including the Indian Contract Act, 1872, Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021, and FEMA, 1999. By engaging us you authorize ReportRight to prepare and submit RBI FIRMS filings under your mandate.
+            </p>
+            <ul class="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                <li>Scope: Advisory, documentation, and submission assistance; we do not replace statutory auditors or law firms.</li>
+                <li>Client obligations: Provide accurate inputs, timely approvals, and pay statutory/GST dues.</li>
+                <li>Liability: Limited to the professional fees paid for a specific engagement except in cases of fraud or wilful misconduct.</li>
+            </ul>
+            <p class="text-gray-600">
+                Disputes will be resolved through good-faith discussions and, failing that, submitted to competent courts in Mumbai, Maharashtra.
+            </p>
+        </div>
+    </div>
+
+    <div id="complianceModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content relative">
+            <button type="button" class="modal-close" data-modal-close aria-label="Close Compliance Statement">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Compliance Statement</h3>
+            <p class="text-gray-600 mb-4">
+                Our workflows align with the Foreign Exchange Management Act, 1999, RBI Master Directions on Reporting under FEMA, Companies Act, 2013, and Prevention of Money Laundering Act, 2002. Every filing is validated against sectoral caps, pricing guidelines, and reporting timelines issued by RBI and DPIIT.
+            </p>
+            <ul class="list-disc list-inside text-gray-600 space-y-2 mb-4">
+                <li>Four-eye review before submission on the FIRMS portal.</li>
+                <li>Secure coordination with AD Category-I banks, SEBI-registered custodians, and legal counsel.</li>
+                <li>Audit-ready documentation maintained for at least eight years per FEMA and Companies Act norms.</li>
+            </ul>
+            <p class="text-gray-600">
+                We continuously track circulars from RBI, MCA, and CBDT to keep our compliance library current so your filings remain defensible during inspections.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (!targetId || targetId === '#' || targetId.length < 2) {
+                    return;
+                }
+
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Add fade-in animation to elements as they come into view
+        const fadeElements = document.querySelectorAll('.fade-in');
+
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    fadeInObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(element => {
+            element.classList.add('opacity-0');
+            fadeInObserver.observe(element);
+        });
+
+        // Modal interactions
+        const modalTriggers = document.querySelectorAll('[data-modal-target]');
+        const modalCloseButtons = document.querySelectorAll('[data-modal-close]');
+        const modalOverlays = document.querySelectorAll('.modal-overlay');
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('modal-open');
+            }
+        }
+
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+            if (!document.querySelector('.modal-overlay.active')) {
+                document.body.classList.remove('modal-open');
+            }
+        }
+
+        modalTriggers.forEach(button => {
+            button.addEventListener('click', () => openModal(button.getAttribute('data-modal-target')));
+        });
+
+        modalCloseButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = button.closest('.modal-overlay');
+                if (modal) {
+                    closeModal(modal);
+                }
+            });
+        });
+
+        modalOverlays.forEach(overlay => {
+            overlay.addEventListener('click', (event) => {
+                if (event.target === overlay) {
+                    closeModal(overlay);
+                }
+            });
+        });
+
+        // Contact form submission
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                service: document.getElementById('service').value,
+                message: document.getElementById('message').value
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/submit-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                alert(result.message);
+                if (response.ok) {
+                    document.getElementById('contactForm').reset();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error sending message. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
+    <section id="services" class="py-20 bg-slate-100">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16 space-y-4">
+                <p class="tag-pill inline-block text-blue-600 bg-blue-100/60 border-blue-200">What we ship</p>
+                <h2 class="text-3xl font-extrabold text-slate-900">RBI / FEMA filings we manage end-to-end</h2>
+                <p class="text-slate-500 max-w-3xl mx-auto">From greenfield FDI to complex secondary transfers, each workflow includes document prep, bank coordination, filings and follow-ups.</p>
+            </div>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-semibold">Form FC-GPR</h3>
+                        <span class="tag-pill text-blue-700 border-blue-200 bg-blue-50">FDI</span>
+                    </div>
+                    <p class="mt-4 text-slate-500">Reporting primary capital infusion under the automatic route.</p>
+                    <div class="mt-6 text-sm text-slate-400 flex items-center space-x-2">
+                        <i class="fas fa-clock text-blue-500"></i>
+                        <span>30 days from receipt</span>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-semibold">Form FC-TRS</h3>
+                        <span class="tag-pill text-purple-700 border-purple-200 bg-purple-50">Transfers</span>
+                    </div>
+                    <p class="mt-4 text-slate-500">Share transfers between resident and non-resident investors.</p>
+                    <div class="mt-6 text-sm text-slate-400 flex items-center space-x-2">
+                        <i class="fas fa-clock text-blue-500"></i>
+                        <span>60 days from consideration</span>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-semibold">Form LLP-I / II</h3>
+                        <span class="tag-pill text-rose-700 border-rose-200 bg-rose-50">LLP</span>
+                    </div>
+                    <p class="mt-4 text-slate-500">Capital contribution and transfer reporting for FEMA-compliant LLPs.</p>
+                    <div class="mt-6 text-sm text-slate-400 flex items-center space-x-2">
+                        <i class="fas fa-clock text-blue-500"></i>
+                        <span>Timeline per RBI master direction</span>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-semibold">Form DI</h3>
+                        <span class="tag-pill text-emerald-700 border-emerald-200 bg-emerald-50">Downstream</span>
+                    </div>
+                    <p class="mt-4 text-slate-500">Declaration of downstream investments by Indian entities with foreign ownership.</p>
+                    <div class="mt-6 text-sm text-slate-400 flex items-center space-x-2">
+                        <i class="fas fa-clock text-blue-500"></i>
+                        <span>30 days from investment</span>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-semibold">Entity onboarding</h3>
+                        <span class="tag-pill text-indigo-700 border-indigo-200 bg-indigo-50">FIRMS</span>
+                    </div>
+                    <p class="mt-4 text-slate-500">Creation of Entity Master and business user accounts on the FIRMS portal.</p>
+                    <div class="mt-6 text-sm text-slate-400 flex items-center space-x-2">
+                        <i class="fas fa-clock text-blue-500"></i>
+                        <span>5-7 working days</span>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-semibold">Special situations</h3>
+                        <span class="tag-pill text-amber-700 border-amber-200 bg-amber-50">Custom</span>
+                    </div>
+                    <p class="mt-4 text-slate-500">Corrections, compounding support, late submissions and bespoke FEMA advisory.</p>
+                    <div class="mt-6 text-sm text-slate-400 flex items-center space-x-2">
+                        <i class="fas fa-headset text-blue-500"></i>
+                        <span>Dedicated desk</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
