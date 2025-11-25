@@ -912,7 +912,7 @@
     </footer>
 
     <div id="modalOverlay"
-        class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm opacity-0 invisible flex items-center justify-center transition-all duration-300">
         <div id="modalContent"
             class="bg-white dark:bg-[#101010] border border-slate-200 dark:border-white/10 rounded-2xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto transform scale-95 transition-transform duration-300 shadow-2xl">
             <div
@@ -1108,11 +1108,197 @@
         }
 
         const modalData = {
-            privacy: { title: "Privacy Policy", body: `<div class="mb-6"><h4 class="font-bold text-lg">Data Commitment</h4><p class="opacity-80">IT Act 2000 Compliant</p></div><ul class="space-y-4 list-disc pl-5"><li><strong>Collection:</strong> We only collect name/email/phone.</li><li><strong>Storage:</strong> Documents stored in encrypted servers.</li><li><strong>Sharing:</strong> No 3rd party sharing except mandated authorities.</li></ul>` },
-            terms: { title: "Terms of Engagement", body: `<div class="mb-6"><h4 class="font-bold text-lg">Consulting Agreement</h4></div><ul class="space-y-4 list-disc pl-5"><li><strong>Services:</strong> Advisory & filing assistance. Not statutory audit.</li><li><strong>Data:</strong> You ensure data accuracy.</li><li><strong>Jurisdiction:</strong> Mumbai Courts.</li></ul>` }
+            privacy: {
+                title: "Privacy Policy",
+                body: `
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Introduction</h4>
+                            <p class="opacity-80 text-sm">ReportRight ("we", "us", "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal data in compliance with the Digital Personal Data Protection Act (DPDPA), 2023, and RBI guidelines.</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Data We Collect</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li><strong>Contact Information:</strong> Name, email address, phone number, company name</li>
+                                <li><strong>Business Information:</strong> Company registration details, director information, shareholder details</li>
+                                <li><strong>Financial Documents:</strong> Investment details, bank statements, transaction records (for FEMA/RBI filings)</li>
+                                <li><strong>Communication Data:</strong> Correspondence, inquiries, and support requests</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">How We Use Your Data</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li>Preparing and submitting FEMA/RBI compliance filings (FC-GPR, FC-TRS, LLP forms, etc.)</li>
+                                <li>Providing consultancy and advisory services</li>
+                                <li>Communicating with you about your filings and services</li>
+                                <li>Complying with legal and regulatory obligations</li>
+                                <li>Improving our services and customer experience</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Data Storage & Security</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li><strong>Location:</strong> All data is stored on secure, encrypted servers located in India, in compliance with RBI data localization requirements</li>
+                                <li><strong>Encryption:</strong> Data is encrypted both at rest and in transit using industry-standard protocols</li>
+                                <li><strong>Access Controls:</strong> Strict role-based access controls and multi-factor authentication</li>
+                                <li><strong>Retention:</strong> Data is retained only as long as necessary for filing purposes and legal compliance (typically 7 years as per Indian tax laws)</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Data Sharing</h4>
+                            <p class="text-sm opacity-80 mb-2">We share your data only when necessary:</p>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li><strong>RBI & Authorized Banks:</strong> For mandatory FEMA compliance filings</li>
+                                <li><strong>Government Authorities:</strong> When required by law or regulatory mandate</li>
+                                <li><strong>No Third-Party Marketing:</strong> We never sell or share your data for marketing purposes</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Your Rights (DPDPA 2023)</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li><strong>Access:</strong> Request a copy of your personal data</li>
+                                <li><strong>Correction:</strong> Request correction of inaccurate data</li>
+                                <li><strong>Deletion:</strong> Request deletion after legal retention periods expire</li>
+                                <li><strong>Withdrawal of Consent:</strong> Withdraw consent for non-mandatory processing</li>
+                                <li><strong>Grievance Redressal:</strong> Contact our Data Protection Officer at privacy@reportright.in</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">Consent</h4>
+                            <p class="text-sm opacity-80">By using our services, you provide explicit consent for data processing as described. You may withdraw consent at any time, subject to our legal obligations to retain certain data for compliance purposes.</p>
+                        </div>
+
+                        <div class="text-xs opacity-60">
+                            <p><strong>Last Updated:</strong> November 2025</p>
+                            <p><strong>Contact:</strong> info@reportright.in | Mumbai, India</p>
+                        </div>
+                    </div>
+                `
+            },
+            terms: {
+                title: "Terms of Engagement",
+                body: `
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">1. Services Provided</h4>
+                            <p class="text-sm opacity-80 mb-2">ReportRight provides FEMA and RBI compliance consultancy services, including:</p>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li>Advisory on foreign investment reporting requirements</li>
+                                <li>Preparation and filing of FC-GPR, FC-TRS, LLP forms, Form DI, and other RBI filings</li>
+                                <li>Liaison with Authorized Dealer (AD) banks</li>
+                                <li>Document review and compliance audits</li>
+                            </ul>
+                            <p class="text-sm opacity-80 mt-2"><strong>Important:</strong> We are consultants, not statutory auditors. Our services do not constitute legal or accounting advice.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">2. Client Obligations</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li><strong>Data Accuracy:</strong> You are responsible for ensuring all information and documents provided are accurate, complete, and up-to-date</li>
+                                <li><strong>Timely Submission:</strong> Provide required documents within agreed timelines to avoid regulatory penalties</li>
+                                <li><strong>Cooperation:</strong> Respond promptly to queries from us or regulatory authorities</li>
+                                <li><strong>Compliance:</strong> Ensure your business activities comply with FEMA and other applicable laws</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">3. Our Obligations</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li><strong>Professional Standards:</strong> Provide services with due diligence and professional care</li>
+                                <li><strong>Confidentiality:</strong> Maintain strict confidentiality of your data and documents</li>
+                                <li><strong>Timely Filing:</strong> Submit filings within regulatory deadlines, subject to timely receipt of required information</li>
+                                <li><strong>Updates:</strong> Keep you informed of filing status and any regulatory changes</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">4. Fees & Payment</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li>Fees are as per the pricing plan selected or as mutually agreed</li>
+                                <li>Payment terms: As specified in the invoice (typically advance or upon completion)</li>
+                                <li>GST applicable as per Indian tax laws</li>
+                                <li>Additional charges may apply for urgent filings or complex cases</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">5. Limitation of Liability</h4>
+                            <p class="text-sm opacity-80">Our liability is limited to the fees paid for the specific service. We are not liable for:</p>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li>Penalties arising from inaccurate information provided by you</li>
+                                <li>Delays caused by regulatory authorities or third parties</li>
+                                <li>Changes in laws or regulations after filing</li>
+                                <li>Consequential or indirect damages</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">6. Intellectual Property</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li><strong>Your Documents:</strong> You retain all rights to your business documents and data</li>
+                                <li><strong>Our Methodologies:</strong> We retain IP rights to our processes, templates, and methodologies</li>
+                                <li><strong>Work Product:</strong> Filed forms and reports belong to you</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">7. Termination</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li>Either party may terminate with 15 days written notice</li>
+                                <li>Ongoing filings must be completed or transitioned</li>
+                                <li>Fees for completed work remain payable</li>
+                                <li>Confidentiality obligations survive termination</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">8. Dispute Resolution</h4>
+                            <ul class="space-y-2 list-disc pl-5 text-sm opacity-80">
+                                <li><strong>Governing Law:</strong> Indian Contract Act, 1872, and applicable FEMA regulations</li>
+                                <li><strong>Jurisdiction:</strong> Courts of Mumbai, Maharashtra, India</li>
+                                <li><strong>Mediation:</strong> Parties agree to attempt mediation before litigation</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-lg mb-2">9. Data Protection</h4>
+                            <p class="text-sm opacity-80">All data handling is governed by our Privacy Policy and complies with the Digital Personal Data Protection Act (DPDPA), 2023. Please review our Privacy Policy for details.</p>
+                        </div>
+
+                        <div class="text-xs opacity-60">
+                            <p><strong>Acceptance:</strong> By engaging our services, you agree to these Terms of Engagement.</p>
+                            <p><strong>Last Updated:</strong> November 2025</p>
+                            <p><strong>Contact:</strong> info@reportright.in | Mumbai, India</p>
+                        </div>
+                    </div>
+                `
+            }
         };
-        function toggleModal(t) { if (modalData[t]) { document.getElementById('modalTitle').innerText = modalData[t].title; document.getElementById('modalBody').innerHTML = modalData[t].body; document.getElementById('modalOverlay').classList.remove('hidden'); setTimeout(() => document.getElementById('modalContent').classList.remove('scale-95'), 10); } }
-        function closeModal() { document.getElementById('modalContent').classList.add('scale-95'); setTimeout(() => document.getElementById('modalOverlay').classList.add('hidden'), 300); }
+        function toggleModal(t) {
+            if (modalData[t]) {
+                const overlay = document.getElementById('modalOverlay');
+                const content = document.getElementById('modalContent');
+                document.getElementById('modalTitle').innerText = modalData[t].title;
+                document.getElementById('modalBody').innerHTML = modalData[t].body;
+                overlay.classList.remove('invisible', 'opacity-0');
+                overlay.classList.add('opacity-100');
+                setTimeout(() => content.classList.remove('scale-95'), 10);
+            }
+        }
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const content = document.getElementById('modalContent');
+            content.classList.add('scale-95');
+            overlay.classList.remove('opacity-100');
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.classList.add('invisible'), 300);
+        }
         function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
     </script>
 </body>
