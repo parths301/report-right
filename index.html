@@ -65,7 +65,8 @@
         }
 
         // IMMEDIATE THEME APPLICATION (Prevents FOUC)
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // Default to light mode if no preference is stored
+        if (localStorage.theme === 'dark' || (localStorage.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
@@ -494,12 +495,7 @@
                     <a href="#pricing"
                         class="text-sm font-medium text-slate-600 dark:text-gray-300 hover:text-theme-500 dark:hover:text-white transition-colors">Pricing</a>
                 </div>
-                <!-- Theme Toggle Button -->
-                <button id="themeToggle"
-                    class="hidden md:flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-500 dark:text-gray-400 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors"
-                    title="Toggle Theme">
-                    <i class="fas fa-adjust"></i>
-                </button>
+
 
                 <a href="#contact"
                     class="hidden md:block px-6 py-2.5 rounded-full text-white text-sm font-bold transition-transform hover:scale-105 soft-shadow"
@@ -519,10 +515,7 @@
     <!-- Hero Section -->
     <section class="min-h-screen flex items-center justify-center pt-32 lg:pt-48 px-4 relative">
         <div class="max-w-4xl mx-auto text-center space-y-8 reveal active">
-            <div
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-theme-50 dark:bg-white/5 border border-theme-200 dark:border-white/10 text-sm font-bold tracking-wide text-theme-900 dark:text-gray-200 mt-4 md:mt-0">
-                <i class="fas fa-check text-black dark:text-white"></i><span>Reporting, Done Right</span>
-            </div>
+
             <div class="min-h-[10rem] flex flex-col justify-center items-center">
                 <h1
                     class="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.1] transition-colors duration-500">
@@ -654,8 +647,8 @@
                             class="fas fa-question text-2xl text-slate-700 dark:text-white"></i>
                         <h3 class="text-xl font-bold text-slate-900 dark:text-white">Other Advisory</h3>
                     </div>
-                    <p class="text-slate-600 dark:text-gray-400 text-sm mb-4 relative z-10">Amendments, Compounding, and
-                        resolution of historic delays or LSF (Late Submission Fees).</p>
+                    <p class="text-slate-600 dark:text-gray-400 text-sm mb-4 relative z-10">Amendments, compounding, and
+                        resolution of historic delays or late submission fees.</p>
                     <div
                         class="flex items-center text-xs font-mono underline font-semibold text-theme-600 dark:text-white relative z-10">
                         <a href="#contact">Contact for Custom Quote</a>
@@ -901,6 +894,18 @@
                     <li><button onclick="toggleModal('terms')"
                             class="hover:text-slate-900 dark:hover:text-white text-left">Terms of Engagement</button>
                     </li>
+                    <li class="pt-4 mt-2 border-t border-slate-200 dark:border-white/10">
+                        <div class="flex flex-col gap-1">
+                            <label for="themeSelect"
+                                class="text-xs font-bold uppercase tracking-wider text-slate-400">Theme</label>
+                            <select id="themeSelect"
+                                class="bg-transparent text-slate-500 dark:text-gray-500 text-sm border border-slate-200 dark:border-white/10 rounded p-1 outline-none cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors w-full">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="system">System</option>
+                            </select>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -931,31 +936,40 @@
         const WEBHOOK_URL = "YOUR_WEBHOOK_URL_HERE";
 
         // --- THEME LOGIC ---
-        const themeToggle = document.getElementById('themeToggle');
+        const themeSelect = document.getElementById('themeSelect');
 
-        // Apply theme from localStorage or system preference on load
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
+        function applyTheme(theme) {
+            if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+
+            if (theme === 'system') {
+                localStorage.removeItem('theme');
+            } else {
+                localStorage.theme = theme;
+            }
         }
 
-        function updateThemeIcon() {
-            // Icon is static (adjust), but we could change it if requested. 
-            // For now, just keeping the button functional.
-        }
+        // Initialize
+        const savedTheme = localStorage.theme || 'light';
+        // applyTheme(savedTheme); // Already handled by head script for initial load, but good to sync state
 
-        if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.theme = 'light';
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.theme = 'dark';
-                }
+        if (themeSelect) {
+            themeSelect.value = savedTheme;
+            themeSelect.addEventListener('change', (e) => {
+                applyTheme(e.target.value);
             });
         }
+
+        // Listen for system changes if in system mode
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.theme) {
+                if (e.matches) document.documentElement.classList.add('dark');
+                else document.documentElement.classList.remove('dark');
+            }
+        });
 
         // Scroll Color Interpolation
         // Rainbow: Purple (265) -> Blue -> Cyan -> Green -> Yellow -> Orange -> Red (0)
