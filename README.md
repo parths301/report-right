@@ -4,8 +4,6 @@
 
 ReportRight is a modern, responsive landing page for a consultancy firm specializing in Foreign Exchange Management Act (FEMA) and Reserve Bank of India (RBI) compliance. We simplify the complex landscape of foreign investment reporting for Indian entities.
 
-![ReportRight Preview](https://via.placeholder.com/800x400?text=ReportRight+Preview)
-
 ## Features
 
 -   **Comprehensive Service Showcase**: Detailed information on key filings:
