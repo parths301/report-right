@@ -6,7 +6,7 @@ ReportRight is a modern, responsive landing page for a consultancy firm speciali
 
 ![ReportRight Preview](https://via.placeholder.com/800x400?text=ReportRight+Preview)
 
-## 🚀 Features
+## Features
 
 -   **Comprehensive Service Showcase**: Detailed information on key filings:
     -   **Form FC-GPR**: For Foreign Direct Investment (FDI) via capital instruments.
@@ -20,7 +20,7 @@ ReportRight is a modern, responsive landing page for a consultancy firm speciali
     -   **Glassmorphism**: Modern frosted glass aesthetic for cards and navigation.
 -   **Contact Form**: Functional inquiry form with validation and submission simulation.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 -   **HTML5**: Semantic structure.
 -   **Tailwind CSS**: Utility-first styling (loaded via CDN for easy deployment).
@@ -28,7 +28,7 @@ ReportRight is a modern, responsive landing page for a consultancy firm speciali
 -   **FontAwesome**: Icons for visual enhancement.
 -   **Google Fonts**: Inter and Playfair Display typography.
 
-## 📦 Setup & Usage
+## Setup & Usage
 
 ### Local Development
 1.  Clone the repository:
@@ -49,11 +49,13 @@ ReportRight is a modern, responsive landing page for a consultancy firm speciali
 4.  Select `main` (or `master`) branch and `/root` folder.
 5.  Click **Save**. Your site will be live in a few minutes!
 
-## 📄 License
+## License
 
-This project is available for personal and commercial use.
+Copyright (c) 2025 Parth Sharma. All rights reserved.
+
+Any use of this software requires prior written consent. Please contact parthsh.ind@gmail.com for permissions.
 
 ---
 *Compliance Simplified.*
 
-~PS⚡
+~PS
