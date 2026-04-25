@@ -1076,40 +1076,16 @@
             }
         });
 
-        // Scroll Color Interpolation
-        // Rainbow: Purple (265) -> Blue -> Cyan -> Green -> Yellow -> Orange -> Red (0)
-        const hueStops = [
-            { p: 0, h: 265 },    // Purple
-            { p: 0.16, h: 240 }, // Blue
-            { p: 0.33, h: 180 }, // Cyan
-            { p: 0.5, h: 120 },  // Green
-            { p: 0.66, h: 60 },  // Yellow
-            { p: 0.83, h: 30 },  // Orange
-            { p: 1, h: 0 }       // Red
-        ];
-
-        function getHue(progress) {
-            let start = hueStops[0], end = hueStops[hueStops.length - 1];
-            for (let i = 0; i < hueStops.length - 1; i++) {
-                if (progress >= hueStops[i].p && progress <= hueStops[i + 1].p) {
-                    start = hueStops[i]; end = hueStops[i + 1]; break;
-                }
-            }
-            const range = end.p - start.p;
-            const percent = (progress - start.p) / range;
-            return start.h + (end.h - start.h) * percent;
-        }
-
-        window.addEventListener('scroll', () => {
+        function updateScrollEffects() {
             const scrollP = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-            const currentHue = getHue(scrollP);
-
-            document.documentElement.style.setProperty('--hue', currentHue);
             document.getElementById('progressBar').style.width = (scrollP * 100) + '%';
 
             const reveals = document.querySelectorAll('.reveal');
             reveals.forEach((r) => { if (r.getBoundingClientRect().top < window.innerHeight - 150) r.classList.add('active'); });
-        });
+        }
+
+        window.addEventListener('scroll', updateScrollEffects);
+        updateScrollEffects();
 
         // --- PARTICLE SYSTEM ---
         const canvas = document.getElementById('particles-canvas');
